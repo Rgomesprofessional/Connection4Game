@@ -1,0 +1,906 @@
+package gameconnection4;
+
+import java.util.Random;
+import java.util.Scanner;
+
+/**
+ *
+ * @author R. Gomes
+ */
+public class GameConnection4 {
+    
+    //Main Class
+    
+    public static void main(String[] args) {
+                
+        //Variables
+        
+        GameConnection4 changeClass = new GameConnection4();
+        Scanner kb = new Scanner(System.in);
+                
+        int gameMode = 0;  
+        
+        char[][] mainBoard = {
+            
+            {' ', ' ', ' ', ' ', ' ', ' ', ' '},
+            {' ', ' ', ' ', ' ', ' ', ' ', ' '},
+            {' ', ' ', ' ', ' ', ' ', ' ', ' '},
+            {' ', ' ', ' ', ' ', ' ', ' ', ' '},
+            {' ', ' ', ' ', ' ', ' ', ' ', ' '},
+            {' ', ' ', ' ', ' ', ' ', ' ', ' '},
+            {' ', ' ', ' ', ' ', ' ', ' ', ' '}
+                
+        };
+        
+        //Menu
+        
+        System.out.println("Welcome to Connection 4 Game!!!");
+        System.out.println("");
+        System.out.println("Please select the mode:");
+        System.out.println("");
+        System.out.println("1 - Single Player");
+        System.out.println("2 - Multiplayer");
+        System.out.println("");
+        
+        do {
+            
+            System.out.println("Option 1 or 2? ");
+            gameMode = kb.nextInt();
+        
+        } while (gameMode < 1 || gameMode > 2);
+        
+        if (gameMode == 1) {
+                        
+            changeClass.SinglePlayer(0, mainBoard, true);
+            
+        }
+        
+        if (gameMode == 2) {
+            
+            changeClass.MultiPlayer(0, mainBoard, true);
+        }  
+        
+    }
+    
+    //Single Player Class
+        
+    public void SinglePlayer(int choicePlayerFunction, char[][] boardFunction, boolean checkerPlayer1Function) {
+            
+        //Variables Single Player
+        
+        GameConnection4 changeClass = new GameConnection4();
+        Random columnChoiceCPU = new Random();
+        Scanner kb = new Scanner(System.in);
+        
+        char characterPlayer1 = 'X';
+        char characterCPU = 'O'; 
+        char[][] board = boardFunction;
+        int count = 6;
+        int draw = 0; 
+        int player1Winner;
+        int choicePlayer1 = choicePlayerFunction;
+        int choiceCPU = choicePlayerFunction;
+        boolean checkerPlayer1 = checkerPlayer1Function; 
+        
+        //Game Layout
+        
+        System.out.println("");
+        System.out.println("Player 1 = X");
+        System.out.println("CPU = O");        
+        System.out.println("");
+        
+        for (int i = 0; i < board.length; i++) {
+            
+            System.out.print("|");
+            
+            for (int j = 0; j < board.length; j++) {
+                
+                System.out.print(board[i][j] + "|");
+                
+            }
+            
+            System.out.println("");
+            
+            if (i == board.length - 1) {
+                
+                for (int j = 0; j < board.length; j++) {
+                    
+                    System.out.print(" " + (j + 1));
+                    
+                }
+                
+            }
+                        
+        }
+        
+        System.out.println("");
+        System.out.println("");
+        
+        //Verify if player 1 wins
+        
+        for(int i = board.length - 1; i >= 0; i--) {
+        
+            //Horizontal checker
+            
+            for (int j = 0; j < board.length; j++) {
+
+                player1Winner = 0;
+                int n = j;
+
+                if (board[i][n] == 'X') {
+
+                    do {
+
+                        player1Winner++;
+                        n++;
+
+                    } while (n < board.length && board[i][n] == 'X' );
+
+                }
+
+                if (player1Winner == 4) {
+
+                   changeClass.ShowCreditsSingle(true);
+
+                }
+
+            }
+            
+            //Vertical checker
+            
+            for (int j = board.length - 1; j >= 0; j--) {
+                
+                player1Winner = 0;
+                int n = j;
+                
+                if (board[n][i] == 'X') {
+
+                    do {
+               
+                        player1Winner++;
+                        n--;
+
+                    } while (n >= 0 && board[n][i] == 'X' );
+                    
+                }
+
+                if (player1Winner == 4) {
+
+                   changeClass.ShowCreditsSingle(true);
+
+                }
+                
+            }
+               
+            //Diagonal (from right top to left bottom like that: / ) checker       
+            
+            for (int j = i, n = board.length - 1; n >= 0 && j < board.length ; n--) {
+                
+                player1Winner = 0;
+                
+                if (board[j][n] == 'X') {
+
+                    do {
+               
+                        player1Winner++;
+                        n--;
+                        j++;
+
+                    } while (n >= 0 && j < board.length && board[j][n] == 'X' );
+                    
+                }
+                              
+                if (player1Winner == 4) {
+
+                   changeClass.ShowCreditsSingle(true);
+
+                }
+                        
+            }
+            
+            //Diagonal (from left top to right bottom like that: \ ) checker      
+            
+            for (int j = i, n = 0; n < board.length && j < board.length ; n++) {
+                
+                player1Winner = 0;
+                
+                if (board[j][n] == 'X') {
+
+                    do {
+               
+                        player1Winner++;
+                        n++;
+                        j++;
+
+                    } while (n < board.length && j < board.length && board[j][n] == 'X' );
+                    
+                }
+                              
+                if (player1Winner == 4) {
+    
+                   changeClass.ShowCreditsSingle(true);
+
+                }
+                        
+            }
+            
+        }
+            
+        //Verify if CPU wins
+        
+        for(int i = board.length - 1; i >= 0; i--) {
+        
+            //Horizontal checker
+            
+            for (int j = 0; j < board.length; j++) {
+
+                player1Winner = 0;
+                int n = j;
+
+                if (board[i][n] == 'O') {
+
+                    do {
+
+                        player1Winner++;
+                        n++;
+
+                    } while (n < board.length && board[i][n] == 'O' );
+
+                }
+
+                if (player1Winner == 4) {
+
+                   changeClass.ShowCreditsSingle(false);
+
+                }
+
+            }
+            
+            //Vertical checker
+            
+            for (int j = board.length - 1; j >= 0; j--) {
+                
+                player1Winner = 0;
+                int n = j;
+                
+                if (board[n][i] == 'O') {
+
+                    do {
+               
+                        player1Winner++;
+                        n--;
+
+                    } while (n >= 0 && board[n][i] == 'O' );
+                    
+                }
+
+                if (player1Winner == 4) {
+
+                   changeClass.ShowCreditsSingle(false);
+
+                }
+                
+            }
+               
+            //Diagonal (from right top to left bottom like that: / ) checker       
+            
+            for (int j = i, n = board.length - 1; n >= 0 && j < board.length ; n--) {
+                
+                player1Winner = 0;
+                
+                if (board[j][n] == 'O') {
+
+                    do {
+               
+                        player1Winner++;
+                        n--;
+                        j++;
+
+                    } while (n >= 0 && j < board.length && board[j][n] == 'O' );
+                    
+                }
+                              
+                if (player1Winner == 4) {
+
+                   changeClass.ShowCreditsSingle(false);
+
+                }
+                        
+            }
+            
+            //Diagonal (from left top to right bottom like that: \ ) checker      
+            
+            for (int j = i, n = 0; n < board.length && j < board.length ; n++) {
+                
+                player1Winner = 0;
+                
+                if (board[j][n] == 'O') {
+
+                    do {
+               
+                        player1Winner++;
+                        n++;
+                        j++;
+
+                    } while (n < board.length && j < board.length && board[j][n] == 'O' );
+                    
+                }
+                              
+                if (player1Winner == 4) {
+    
+                   changeClass.ShowCreditsSingle(false);
+
+                }
+                        
+            }
+            
+        }
+        
+        //Verify if nobody wins
+         
+        for (int i = 0; i < board.length; i++) {
+             
+            if (board[0][i] != ' ') {
+
+                draw++;
+                
+                if (draw == 7) {
+                    
+                   changeClass.ShowCredits2();
+                   
+                }
+
+            }
+             
+        }
+        
+        //Show players turns and get their moves
+              
+        //Show player 1 turns and get his moves
+        
+        if (checkerPlayer1 == true) {
+            
+            checkerPlayer1 = false;
+            
+            System.out.println("Player 1 it's your turn! ");
+            
+            do {
+                
+                System.out.println("Select a column from 1 to 7.");
+                choicePlayer1 = kb.nextInt() - 1;
+                
+            } while (choicePlayer1 < 0 || choicePlayer1 > 6);
+            
+            do {
+                
+                if (board[count][choicePlayer1] ==  ' ') {
+                
+                    board[count][choicePlayer1] = characterPlayer1; 
+                    count = 10;
+                        
+                } else {
+                        
+                    count--;
+                    
+                    //Veryfy if the column is completed filled
+                    
+                    if (count < 0) {
+                        
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("Sorry, this column is already filled. Try a different one.");
+                        checkerPlayer1 = true;
+                        
+                        changeClass.SinglePlayer(choicePlayer1, board, checkerPlayer1);
+                        
+                    }
+                    
+                }                
+                
+            } while (count < 10); 
+            
+            //Go back to the beginning
+            
+            changeClass.SinglePlayer(choicePlayer1, board, checkerPlayer1);
+
+            //Show CPU turns and get his moves
+        
+        } else {
+            
+            checkerPlayer1 = true;
+            
+            
+            choiceCPU = columnChoiceCPU.nextInt(7);
+            
+            do {
+                
+                if (board[count][choiceCPU] ==  ' ') {
+                
+                    board[count][choiceCPU] = characterCPU; 
+                    count = 10;
+                        
+                } else {
+                        
+                    count--; 
+
+                    //Veryfy if the column is completed filled
+                    
+                    if (count < 0) {
+                        
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("Sorry, this column is already filled. Try a different one.");
+                        checkerPlayer1 = false;
+                        
+                        changeClass.SinglePlayer(choiceCPU, board, checkerPlayer1);
+                        
+                    }
+                        
+                }                
+                
+            } while (count < 10);
+            
+            //Go back to the beginning
+            
+            changeClass.SinglePlayer(choiceCPU, board, checkerPlayer1);
+                       
+        }
+        
+        
+        
+        
+        
+
+    }
+       
+    //Multiplayer Class
+    
+    public void MultiPlayer(int choicePlayerFunction, char[][] boardFunction, boolean checkerPlayer1Function) {
+
+        //Variables Multiplayer
+        
+        GameConnection4 changeClass = new GameConnection4();
+        Scanner kb = new Scanner(System.in);
+        
+        char characterPlayer1 = 'X';
+        char characterPlayer2 = 'O'; 
+        char[][] board = boardFunction;
+        int count = 6;
+        int draw = 0; 
+        int player1Winner;
+        int choicePlayer1 = choicePlayerFunction;
+        int choicePlayer2 = choicePlayerFunction;
+        boolean checkerPlayer1 = checkerPlayer1Function; 
+        
+        //Game Layout
+        
+        System.out.println("");
+        System.out.println("Player 1 = X");
+        System.out.println("Player 2 = O");        
+        System.out.println("");
+        
+        for (int i = 0; i < board.length; i++) {
+            
+            System.out.print("|");
+            
+            for (int j = 0; j < board.length; j++) {
+                
+                System.out.print(board[i][j] + "|");
+                
+            }
+            
+            System.out.println("");
+            
+            if (i == board.length - 1) {
+                
+                for (int j = 0; j < board.length; j++) {
+                    
+                    System.out.print(" " + (j + 1));
+                    
+                }
+                
+            }
+                        
+        }
+        
+        System.out.println("");
+        System.out.println("");
+        
+        //Verify if player 1 wins
+        
+        for(int i = board.length - 1; i >= 0; i--) {
+        
+            //Horizontal checker
+            
+            for (int j = 0; j < board.length; j++) {
+
+                player1Winner = 0;
+                int n = j;
+
+                if (board[i][n] == 'X') {
+
+                    do {
+
+                        player1Winner++;
+                        n++;
+
+                    } while (n < board.length && board[i][n] == 'X' );
+
+                }
+
+                if (player1Winner == 4) {
+
+                   changeClass.ShowCredits(true);
+
+                }
+
+            }
+            
+            //Vertical checker
+            
+            for (int j = board.length - 1; j >= 0; j--) {
+                
+                player1Winner = 0;
+                int n = j;
+                
+                if (board[n][i] == 'X') {
+
+                    do {
+               
+                        player1Winner++;
+                        n--;
+
+                    } while (n >= 0 && board[n][i] == 'X' );
+                    
+                }
+
+                if (player1Winner == 4) {
+
+                   changeClass.ShowCredits(true);
+
+                }
+                
+            }
+               
+            //Diagonal (from right top to left bottom like that: / ) checker       
+            
+            for (int j = i, n = board.length - 1; n >= 0 && j < board.length ; n--) {
+                
+                player1Winner = 0;
+                
+                if (board[j][n] == 'X') {
+
+                    do {
+               
+                        player1Winner++;
+                        n--;
+                        j++;
+
+                    } while (n >= 0 && j < board.length && board[j][n] == 'X' );
+                    
+                }
+                              
+                if (player1Winner == 4) {
+
+                   changeClass.ShowCredits(true);
+
+                }
+                        
+            }
+            
+            //Diagonal (from left top to right bottom like that: \ ) checker      
+            
+            for (int j = i, n = 0; n < board.length && j < board.length ; n++) {
+                
+                player1Winner = 0;
+                
+                if (board[j][n] == 'X') {
+
+                    do {
+               
+                        player1Winner++;
+                        n++;
+                        j++;
+
+                    } while (n < board.length && j < board.length && board[j][n] == 'X' );
+                    
+                }
+                              
+                if (player1Winner == 4) {
+    
+                   changeClass.ShowCredits(true);
+
+                }
+                        
+            }
+            
+        }
+            
+        //Verify if player 2 wins
+        
+        for(int i = board.length - 1; i >= 0; i--) {
+        
+            //Horizontal checker
+            
+            for (int j = 0; j < board.length; j++) {
+
+                player1Winner = 0;
+                int n = j;
+
+                if (board[i][n] == 'O') {
+
+                    do {
+
+                        player1Winner++;
+                        n++;
+
+                    } while (n < board.length && board[i][n] == 'O' );
+
+                }
+
+                if (player1Winner == 4) {
+
+                   changeClass.ShowCredits(false);
+
+                }
+
+            }
+            
+            //Vertical checker
+            
+            for (int j = board.length - 1; j >= 0; j--) {
+                
+                player1Winner = 0;
+                int n = j;
+                
+                if (board[n][i] == 'O') {
+
+                    do {
+               
+                        player1Winner++;
+                        n--;
+
+                    } while (n >= 0 && board[n][i] == 'O' );
+                    
+                }
+
+                if (player1Winner == 4) {
+
+                   changeClass.ShowCredits(false);
+
+                }
+                
+            }
+               
+            //Diagonal (from right top to left bottom like that: / ) checker       
+            
+            for (int j = i, n = board.length - 1; n >= 0 && j < board.length ; n--) {
+                
+                player1Winner = 0;
+                
+                if (board[j][n] == 'O') {
+
+                    do {
+               
+                        player1Winner++;
+                        n--;
+                        j++;
+
+                    } while (n >= 0 && j < board.length && board[j][n] == 'O' );
+                    
+                }
+                              
+                if (player1Winner == 4) {
+
+                   changeClass.ShowCredits(false);
+
+                }
+                        
+            }
+            
+            //Diagonal (from left top to right bottom like that: \ ) checker      
+            
+            for (int j = i, n = 0; n < board.length && j < board.length ; n++) {
+                
+                player1Winner = 0;
+                
+                if (board[j][n] == 'O') {
+
+                    do {
+               
+                        player1Winner++;
+                        n++;
+                        j++;
+
+                    } while (n < board.length && j < board.length && board[j][n] == 'O' );
+                    
+                }
+                              
+                if (player1Winner == 4) {
+    
+                   changeClass.ShowCredits(false);
+
+                }
+                        
+            }
+            
+        }
+        
+        //Verify if nobody wins
+         
+        for (int i = 0; i < board.length; i++) {
+             
+            if (board[0][i] != ' ') {
+
+                draw++;
+                
+                if (draw == 7) {
+                    
+                   changeClass.ShowCredits2();
+                   
+                }
+
+            }
+             
+        }
+        
+        //Show players turns and get their moves
+              
+        //Show player 1 turns and get his moves
+        
+        if (checkerPlayer1 == true) {
+            
+            checkerPlayer1 = false;
+            
+            System.out.println("Player 1 it's your turn! ");
+            
+            do {
+                
+                System.out.println("Select a column from 1 to 7.");
+                choicePlayer1 = kb.nextInt() - 1;
+                
+            } while (choicePlayer1 < 0 || choicePlayer1 > 6);
+            
+            do {
+                
+                if (board[count][choicePlayer1] ==  ' ') {
+                
+                    board[count][choicePlayer1] = characterPlayer1; 
+                    count = 10;
+                        
+                } else {
+                        
+                    count--;
+                    
+                    //Veryfy if the column is completed filled
+                    
+                    if (count < 0) {
+                        
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("Sorry, this column is already filled. Try a different one.");
+                        checkerPlayer1 = true;
+                        
+                        changeClass.MultiPlayer(choicePlayer1, board, checkerPlayer1);
+                        
+                    }
+                    
+                }                
+                
+            } while (count < 10); 
+            
+            //Go back to the beginning
+            
+            changeClass.MultiPlayer(choicePlayer1, board, checkerPlayer1);
+
+            //Show player 2 turns and get his moves
+        
+        } else {
+            
+            checkerPlayer1 = true;
+            
+            System.out.println("Player 2 it's your turn: "); 
+            
+            do {
+                
+                System.out.println("Select a column from 1 to 7.");
+                choicePlayer2 = kb.nextInt() - 1;
+                
+            } while (choicePlayer2 < 0 || choicePlayer2 > 6);
+            
+            do {
+                
+                if (board[count][choicePlayer2] ==  ' ') {
+                
+                    board[count][choicePlayer2] = characterPlayer2; 
+                    count = 10;
+                        
+                } else {
+                        
+                    count--; 
+
+                    //Veryfy if the column is completed filled
+                    
+                    if (count < 0) {
+                        
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("Sorry, this column is already filled. Try a different one.");
+                        checkerPlayer1 = false;
+                        
+                        changeClass.MultiPlayer(choicePlayer2, board, checkerPlayer1);
+                        
+                    }
+                        
+                }                
+                
+            } while (count < 10);
+            
+            //Go back to the beginning
+            
+            changeClass.MultiPlayer(choicePlayer2, board, checkerPlayer1);
+                       
+        }
+        
+    } //Game over - show Single Player winner credits 
+    
+    public void ShowCreditsSingle(boolean playerWon) {
+                
+        if (playerWon == true) {
+            
+            System.out.println("Connection 4 Game - Congratulations!!! PLAYER 1 you are the winner!!!");
+            
+        } else {
+            
+            System.out.println("Conection 4 Game - Sorry you were defeated by the CPU!!! Good luck in your next try!!!");
+            
+        }
+        
+        System.out.println("");
+        System.out.println("Game created by R. Gomes - I would like to thank my cousin Gilsimar Silva for your unconditional support in my life.");     
+        System.out.println("");
+
+        System.exit(0);
+        
+    }  
+    
+    //Game over - show Multiplayer winner credits 
+    
+    public void ShowCredits(boolean playerWon) {
+                
+        if (playerWon == true) {
+            
+            System.out.println("Connection 4 Game - Congratulations!!! PLAYER 1 you are the winner!!!");
+            
+        } else {
+            
+            System.out.println("Conection 4 Game - Congratulations!!! PLAYER 2 you are the winner!!!");
+            
+        }
+        
+        System.out.println("");
+        System.out.println("Game created by R. Gomes - I would like to thank my cousin Gilsimar Silva for your unconditional support in my life.");     
+        System.out.println("");
+
+        System.exit(0);
+        
+    } 
+    
+    //Game over - show draw credits 
+    
+    public void ShowCredits2() {
+        
+        System.out.println("Connection 4 Game - Nobody whins. It's a draw!!!");
+        System.out.println("");
+        System.out.println("Game created by R. Gomes - I would like to thank my cousin Gilsimar Silva for your unconditional support in my life.");     
+        System.out.println("");
+
+        System.exit(0);
+        
+    } 
+    
+}
